@@ -59,10 +59,10 @@ const Home = () => {
       >
         <Container maxWidth="lg">
           <Box className="hero-content">
-            <Typography 
-              variant="h1" 
+            <Typography
+              variant="h1"
               className="hero-title"
-              sx={{ 
+              sx={{
                 fontFamily: theme.typography.h1.fontFamily,
                 fontWeight: 700,
                 mb: 2,
@@ -72,10 +72,10 @@ const Home = () => {
             >
               Create Unforgettable Moments
             </Typography>
-            <Typography 
-              variant="h5" 
+            <Typography
+              variant="h5"
               className="hero-subtitle"
-              sx={{ 
+              sx={{
                 mb: 4,
                 maxWidth: '600px',
                 color: 'white',
@@ -90,7 +90,7 @@ const Home = () => {
                 color="primary"
                 size="large"
                 onClick={() => navigate('/events')}
-                sx={{ 
+                sx={{
                   px: 4,
                   py: 1.5,
                   borderRadius: 2,
@@ -104,7 +104,7 @@ const Home = () => {
                 color="inherit"
                 size="large"
                 onClick={() => navigate('/events?type=wedding')}
-                sx={{ 
+                sx={{
                   px: 4,
                   py: 1.5,
                   borderRadius: 2,
@@ -126,12 +126,12 @@ const Home = () => {
       {/* Event Types Section */}
       <Box sx={{ py: 6, bgcolor: 'background.paper' }}>
         <Container maxWidth="lg">
-          <Typography 
-            variant="h3" 
-            component="h2" 
-            align="center" 
+          <Typography
+            variant="h3"
+            component="h2"
+            align="center"
             gutterBottom
-            sx={{ 
+            sx={{
               mb: 6,
               fontFamily: theme.typography.h1.fontFamily,
               fontWeight: 600,
@@ -143,8 +143,8 @@ const Home = () => {
             {eventTypes.map((type) => (
               <Grid item xs={6} sm={3} key={type.name}>
                 <CardActionArea onClick={() => navigate(type.path)}>
-                  <Card 
-                    sx={{ 
+                  <Card
+                    sx={{
                       height: '100%',
                       display: 'flex',
                       flexDirection: 'column',
@@ -175,12 +175,12 @@ const Home = () => {
       {/* Featured Events Section */}
       <Box sx={{ py: 6, bgcolor: 'background.default' }}>
         <Container maxWidth="lg">
-          <Typography 
-            variant="h3" 
-            component="h2" 
-            align="center" 
+          <Typography
+            variant="h3"
+            component="h2"
+            align="center"
             gutterBottom
-            sx={{ 
+            sx={{
               mb: 6,
               fontFamily: theme.typography.h1.fontFamily,
               fontWeight: 600,
@@ -214,19 +214,19 @@ const Home = () => {
                     />
                     <CardContent sx={{ flexGrow: 1, p: 3 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                        <Typography 
-                          variant="h5" 
+                        <Typography
+                          variant="h5"
                           component="h3"
-                          sx={{ 
+                          sx={{
                             fontFamily: theme.typography.h1.fontFamily,
                             fontWeight: 600,
                           }}
                         >
                           {event.name}
                         </Typography>
-                        <Chip 
-                          label={event.type.charAt(0).toUpperCase() + event.type.slice(1)} 
-                          size="small" 
+                        <Chip
+                          label={event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                          size="small"
                           color="primary"
                           sx={{ borderRadius: 1 }}
                         />
@@ -238,10 +238,10 @@ const Home = () => {
                         <Typography variant="body2" color="text.secondary">
                           Starting from ₹{event.packages[0]?.price || 'Contact us'}
                         </Typography>
-                        <Button 
-                          variant="text" 
+                        <Button
+                          variant="text"
                           color="primary"
-                          sx={{ 
+                          sx={{
                             fontWeight: 600,
                             '&:hover': {
                               backgroundColor: 'rgba(51, 102, 255, 0.08)',
@@ -263,7 +263,7 @@ const Home = () => {
               color="primary"
               size="large"
               onClick={() => navigate('/events')}
-              sx={{ 
+              sx={{
                 px: 4,
                 py: 1.5,
                 borderRadius: 2,

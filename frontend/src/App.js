@@ -1,109 +1,66 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, Box } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './context/AuthContext';
 import { AlertProvider } from './context/AlertContext';
+import { MessageProvider } from './context/MessageContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import Events from './pages/Events';
 import EventDetails from './pages/EventDetails';
-import Booking from './pages/Booking';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import MyBookings from './pages/MyBookings';
-import AdminDashboard from './pages/AdminDashboard';
-import PrivateRoute from './components/PrivateRoute';
-import AdminRoute from './components/AdminRoute';
-import theme from './theme';
-import './styles/global.css';
-import AdminLogin from './pages/AdminLogin';
-import ProtectedAdminRoute from './components/ProtectedAdminRoute';
-import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';
+import Contact from './pages/ContactUs';
 import FAQ from './pages/FAQ';
+import AdminDashboard from './pages/AdminDashboard';
 import Mailbox from './pages/Mailbox';
+import theme from './theme';
+
+// Placeholder components for missing admin pages
+const AdminEvents = () => <div>Admin Events Page</div>;
+const AdminBookings = () => <div>Admin Bookings Page</div>;
+const AdminUsers = () => <div>Admin Users Page</div>;
+const AdminSettings = () => <div>Admin Settings Page</div>;
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AlertProvider>
-        <AuthProvider>
-          <Router>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                minHeight: '100vh',
-              }}
-            >
-              <Navbar />
-              <Box
-                component="main"
-                sx={{
-                  flexGrow: 1,
-                  pt: { xs: 8, sm: 9 },
-                  minHeight: '100vh',
-                  backgroundColor: theme.palette.background.default,
-                }}
-              >
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/events" element={<Events />} />
-                  <Route path="/events/:id" element={<EventDetails />} />
-                  <Route path="/contact" element={<ContactUs />} />
-                  <Route path="/about" element={<AboutUs />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route
-                    path="/booking/:eventId"
-                    element={
-                      <PrivateRoute>
-                        <Booking />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/my-bookings"
-                    element={
-                      <PrivateRoute>
-                        <MyBookings />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin"
-                    element={
-                      <AdminRoute>
-                        <AdminDashboard />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route
-                    path="/admin/dashboard"
-                    element={
-                      <ProtectedAdminRoute>
-                        <AdminDashboard />
-                      </ProtectedAdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/mailbox"
-                    element={
-                      <ProtectedAdminRoute>
-                        <Mailbox />
-                      </ProtectedAdminRoute>
-                    }
-                  />
-                </Routes>
-              </Box>
-              <Footer />
-            </Box>
-          </Router>
-        </AuthProvider>
-      </AlertProvider>
+      <CssBaseline />
+      <AuthProvider>
+        <AlertProvider>
+          <MessageProvider>
+            <Router>
+              <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <Navbar />
+                <main style={{ flex: 1 }}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/events" element={<Events />} />
+                    <Route path="/events/:id" element={<EventDetails />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/my-bookings" element={<MyBookings />} />
+                    <Route path="/about" element={<AboutUs />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/events" element={<AdminEvents />} />
+                    <Route path="/admin/bookings" element={<AdminBookings />} />
+                    <Route path="/admin/users" element={<AdminUsers />} />
+                    <Route path="/admin/settings" element={<AdminSettings />} />
+                    <Route path="/admin/mailbox" element={<Mailbox />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </Router>
+          </MessageProvider>
+        </AlertProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

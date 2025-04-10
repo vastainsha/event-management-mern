@@ -49,9 +49,11 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { useMessages } from '../context/MessageContext';
 
 const Mailbox = () => {
     const theme = useTheme();
+    const { refreshUnreadCount } = useMessages();
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -136,6 +138,7 @@ const Mailbox = () => {
                     msg._id === id ? { ...msg, status: newStatus } : msg
                 ));
                 setSuccess('Message status updated successfully');
+                refreshUnreadCount();
             }
         } catch (error) {
             console.error('Error updating message status:', error);
@@ -156,6 +159,20 @@ const Mailbox = () => {
     const handleViewMessage = (message) => {
         setSelectedMessage(message);
         handleMenuClose();
+    };
+
+    const handleMarkAsRead = async (messageId) => {
+        try {
+            await axios.put(`http://localhost:5000/api/messages/${messageId}/read`, {}, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+            setMessages(messages.map(msg =>
+                msg._id === messageId ? { ...msg, status: 'read' } : msg
+            ));
+            refreshUnreadCount(); // Refresh unread count after marking as read
+        } catch (error) {
+            console.error('Error marking message as read:', error);
+        }
     };
 
     const filteredMessages = messages.filter(message => {

@@ -39,6 +39,7 @@ import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import MailIcon from '@mui/icons-material/Mail';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
+import { useMessages } from '../context/MessageContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -52,6 +53,7 @@ const Navbar = () => {
   const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminData, setAdminData] = useState(null);
+  const { unreadCount } = useMessages();
 
   useEffect(() => {
     const adminToken = localStorage.getItem('adminToken');
@@ -107,17 +109,25 @@ const Navbar = () => {
     { text: 'Events', path: '/events', icon: <EventIcon /> },
     ...(user && !isAdmin
       ? [
-          { text: 'My Bookings', path: '/my-bookings', icon: <BookOnlineIcon /> },
-          { text: 'FAQ', path: '/faq', icon: <HelpIcon /> },
-          { text: 'About Us', path: '/about', icon: <GroupsIcon /> },
-          { text: 'Contact', path: '/contact', icon: <ContactMailIcon /> }
-        ]
+        { text: 'My Bookings', path: '/my-bookings', icon: <BookOnlineIcon /> },
+        { text: 'FAQ', path: '/faq', icon: <HelpIcon /> },
+        { text: 'About Us', path: '/about', icon: <GroupsIcon /> },
+        { text: 'Contact', path: '/contact', icon: <ContactMailIcon /> }
+      ]
       : []),
     ...(isAdmin
       ? [
-          { text: 'Admin Dashboard', path: '/admin/dashboard', icon: <DashboardIcon /> },
-          { text: 'Mailbox', path: '/admin/mailbox', icon: <MailIcon /> }
-        ]
+        { text: 'Admin Dashboard', path: '/admin/dashboard', icon: <DashboardIcon /> },
+        {
+          text: 'Mailbox',
+          path: '/admin/mailbox',
+          icon: (
+            <Badge badgeContent={unreadCount} color="error">
+              <MailIcon />
+            </Badge>
+          )
+        }
+      ]
       : []),
   ];
 
