@@ -167,8 +167,8 @@ const AdminDashboard = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      setBookings(bookings.map(booking => 
-        booking._id === selectedBooking._id 
+      setBookings(bookings.map(booking =>
+        booking._id === selectedBooking._id
           ? { ...booking, status: actionType }
           : booking
       ));
@@ -221,12 +221,12 @@ const AdminDashboard = () => {
 
   const filteredBookings = bookings.filter(booking => {
     if (!booking.event || !booking.user) return false;
-    
+
     // Apply status filter
     if (filterStatus !== 'all' && booking.status !== filterStatus) {
       return false;
     }
-    
+
     // Apply search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
@@ -237,14 +237,14 @@ const AdminDashboard = () => {
         booking.package.name.toLowerCase().includes(searchLower)
       );
     }
-    
+
     // Apply tab filter
     if (activeTab === 0) return true; // All bookings
     if (activeTab === 1) return booking.status === 'pending';
     if (activeTab === 2) return booking.status === 'confirmed';
     if (activeTab === 3) return booking.status === 'completed';
     if (activeTab === 4) return booking.status === 'cancelled';
-    
+
     return true;
   });
 
@@ -259,7 +259,7 @@ const AdminDashboard = () => {
   const handlePrint = () => {
     const printWindow = window.open('', '_blank');
     const currentDate = new Date().toLocaleDateString();
-    
+
     printWindow.document.write(`
       <html>
         <head>
@@ -399,7 +399,7 @@ const AdminDashboard = () => {
         </body>
       </html>
     `);
-    
+
     printWindow.document.close();
     printWindow.focus();
   };
@@ -455,9 +455,9 @@ const AdminDashboard = () => {
             </Box>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Tooltip title="Refresh Data">
-                <IconButton 
+                <IconButton
                   onClick={fetchBookings}
-                  sx={{ 
+                  sx={{
                     bgcolor: alpha(theme.palette.primary.main, 0.1),
                     '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.2) }
                   }}
@@ -467,7 +467,7 @@ const AdminDashboard = () => {
               </Tooltip>
               <Tooltip title="Notifications">
                 <IconButton
-                  sx={{ 
+                  sx={{
                     bgcolor: alpha(theme.palette.info.main, 0.1),
                     '&:hover': { bgcolor: alpha(theme.palette.info.main, 0.2) }
                   }}
@@ -483,8 +483,8 @@ const AdminDashboard = () => {
           {/* Stats Cards */}
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card 
-                sx={{ 
+              <Card
+                sx={{
                   height: '100%',
                   transition: 'transform 0.3s, box-shadow 0.3s',
                   '&:hover': {
@@ -498,8 +498,8 @@ const AdminDashboard = () => {
                     <Typography variant="h6" color="text.secondary">
                       Total Bookings
                     </Typography>
-                    <Avatar 
-                      sx={{ 
+                    <Avatar
+                      sx={{
                         bgcolor: alpha(theme.palette.primary.main, 0.1),
                         color: theme.palette.primary.main,
                       }}
@@ -517,8 +517,8 @@ const AdminDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card 
-                sx={{ 
+              <Card
+                sx={{
                   height: '100%',
                   transition: 'transform 0.3s, box-shadow 0.3s',
                   '&:hover': {
@@ -532,8 +532,8 @@ const AdminDashboard = () => {
                     <Typography variant="h6" color="text.secondary">
                       Active Events
                     </Typography>
-                    <Avatar 
-                      sx={{ 
+                    <Avatar
+                      sx={{
                         bgcolor: alpha(theme.palette.success.main, 0.1),
                         color: theme.palette.success.main,
                       }}
@@ -551,8 +551,8 @@ const AdminDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card 
-                sx={{ 
+              <Card
+                sx={{
                   height: '100%',
                   transition: 'transform 0.3s, box-shadow 0.3s',
                   '&:hover': {
@@ -566,8 +566,8 @@ const AdminDashboard = () => {
                     <Typography variant="h6" color="text.secondary">
                       Pending Bookings
                     </Typography>
-                    <Avatar 
-                      sx={{ 
+                    <Avatar
+                      sx={{
                         bgcolor: alpha(theme.palette.warning.main, 0.1),
                         color: theme.palette.warning.main,
                       }}
@@ -585,8 +585,8 @@ const AdminDashboard = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card 
-                sx={{ 
+              <Card
+                sx={{
                   height: '100%',
                   transition: 'transform 0.3s, box-shadow 0.3s',
                   '&:hover': {
@@ -600,8 +600,8 @@ const AdminDashboard = () => {
                     <Typography variant="h6" color="text.secondary">
                       Total Revenue
                     </Typography>
-                    <Avatar 
-                      sx={{ 
+                    <Avatar
+                      sx={{
                         bgcolor: alpha(theme.palette.secondary.main, 0.1),
                         color: theme.palette.secondary.main,
                       }}
@@ -631,7 +631,7 @@ const AdminDashboard = () => {
               <Button
                 variant="outlined"
                 startIcon={<DownloadIcon />}
-                onClick={() => {/* Handle export */}}
+                onClick={() => {/* Handle export */ }}
               >
                 Export
               </Button>
@@ -654,9 +654,9 @@ const AdminDashboard = () => {
                 placeholder="Search by event, customer, or package..."
                 value={searchTerm}
                 onChange={handleSearchChange}
-                style={{ 
-                  border: 'none', 
-                  outline: 'none', 
+                style={{
+                  border: 'none',
+                  outline: 'none',
                   width: '100%',
                   fontSize: '1rem',
                   fontFamily: theme.typography.fontFamily,
@@ -715,10 +715,10 @@ const AdminDashboard = () => {
                 </TableHead>
                 <TableBody>
                   {filteredBookings.map((booking) => (
-                    <TableRow 
+                    <TableRow
                       key={booking._id}
-                      sx={{ 
-                        '&:hover': { 
+                      sx={{
+                        '&:hover': {
                           bgcolor: alpha(theme.palette.primary.main, 0.03),
                         },
                         transition: 'background-color 0.2s',
@@ -726,9 +726,9 @@ const AdminDashboard = () => {
                     >
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Avatar 
-                            src={booking.event?.images?.[0]} 
-                            variant="rounded" 
+                          <Avatar
+                            src={booking.event?.images?.[0]}
+                            variant="rounded"
                             sx={{ width: 40, height: 40 }}
                           >
                             <EventIcon />
@@ -790,7 +790,7 @@ const AdminDashboard = () => {
                           label={booking.status}
                           color={getStatusColor(booking.status)}
                           size="small"
-                          sx={{ 
+                          sx={{
                             textTransform: 'capitalize',
                             fontWeight: 500,
                           }}
@@ -799,8 +799,8 @@ const AdminDashboard = () => {
                       <TableCell>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                           <Tooltip title="View Details">
-                            <IconButton 
-                              size="small" 
+                            <IconButton
+                              size="small"
                               color="primary"
                               onClick={() => navigate(`/events/${booking.event?._id}`)}
                             >
@@ -820,8 +820,8 @@ const AdminDashboard = () => {
                           {booking.status === 'pending' && (
                             <>
                               <Tooltip title="Confirm Booking">
-                                <IconButton 
-                                  size="small" 
+                                <IconButton
+                                  size="small"
                                   color="success"
                                   onClick={() => handleActionClick(booking, 'confirmed')}
                                 >
@@ -829,8 +829,8 @@ const AdminDashboard = () => {
                                 </IconButton>
                               </Tooltip>
                               <Tooltip title="Cancel Booking">
-                                <IconButton 
-                                  size="small" 
+                                <IconButton
+                                  size="small"
                                   color="error"
                                   onClick={() => handleActionClick(booking, 'cancelled')}
                                 >
@@ -873,8 +873,8 @@ const AdminDashboard = () => {
         </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Avatar 
-              sx={{ 
+            <Avatar
+              sx={{
                 bgcolor: alpha(theme.palette[getStatusColor(actionType)]?.main || theme.palette.primary.main, 0.1),
                 color: theme.palette[getStatusColor(actionType)]?.main || theme.palette.primary.main,
                 mr: 2,
@@ -895,9 +895,9 @@ const AdminDashboard = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setActionDialogOpen(false)}>Cancel</Button>
-          <Button 
-            onClick={handleActionConfirm} 
-            variant="contained" 
+          <Button
+            onClick={handleActionConfirm}
+            variant="contained"
             color={getStatusColor(actionType)}
             sx={{ px: 3 }}
           >
