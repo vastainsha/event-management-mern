@@ -36,6 +36,7 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import GroupsIcon from '@mui/icons-material/Groups';
 import HelpIcon from '@mui/icons-material/Help';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
+import MailIcon from '@mui/icons-material/Mail';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 
@@ -104,12 +105,19 @@ const Navbar = () => {
 
   const menuItems = [
     { text: 'Events', path: '/events', icon: <EventIcon /> },
-    { text: 'My Bookings', path: '/my-bookings', icon: <BookOnlineIcon /> },
-    { text: 'FAQ', path: '/faq', icon: <HelpIcon /> },
-    { text: 'About Us', path: '/about', icon: <GroupsIcon /> },
-    { text: 'Contact', path: '/contact', icon: <ContactMailIcon /> },
+    ...(user && !isAdmin
+      ? [
+          { text: 'My Bookings', path: '/my-bookings', icon: <BookOnlineIcon /> },
+          { text: 'FAQ', path: '/faq', icon: <HelpIcon /> },
+          { text: 'About Us', path: '/about', icon: <GroupsIcon /> },
+          { text: 'Contact', path: '/contact', icon: <ContactMailIcon /> }
+        ]
+      : []),
     ...(isAdmin
-      ? [{ text: 'Admin Dashboard', path: '/admin/dashboard', icon: <DashboardIcon /> }]
+      ? [
+          { text: 'Admin Dashboard', path: '/admin/dashboard', icon: <DashboardIcon /> },
+          { text: 'Mailbox', path: '/admin/mailbox', icon: <MailIcon /> }
+        ]
       : []),
   ];
 

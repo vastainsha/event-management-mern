@@ -32,6 +32,8 @@ import {
     ContactSupport,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import axios from 'axios';
+import { useAlert } from '../context/AlertContext';
 
 // Define animations
 const fadeIn = keyframes`
@@ -158,7 +160,11 @@ const ContactUs = () => {
         subject: '',
         message: '',
     });
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const { showAlert } = useAlert();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -168,20 +174,36 @@ const ContactUs = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        setOpenSnackbar(true);
-        setFormData({
-            name: '',
-            email: '',
-            subject: '',
-            message: '',
-        });
+        setLoading(true);
+        setSnackbarOpen(false);
+
+        try {
+            await axios.post('http://localhost:5000/api/messages', formData);
+            setFormData({
+                name: '',
+                email: '',
+                subject: '',
+                message: '',
+            });
+            setSnackbarMessage('Message sent successfully! We will get back to you soon.');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+            showAlert('Message sent successfully!', 'success');
+        } catch (error) {
+            console.error('Error sending message:', error);
+            setSnackbarMessage('Failed to send message. Please try again.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+            showAlert('Failed to send message. Please try again.', 'error');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false);
+        setSnackbarOpen(false);
     };
 
     return (
@@ -305,6 +327,7 @@ const ContactUs = () => {
                                                 variant="contained"
                                                 size="large"
                                                 endIcon={<Send />}
+                                                disabled={loading}
                                                 sx={{
                                                     mt: 1,
                                                     py: 1.5,
@@ -320,10 +343,14 @@ const ContactUs = () => {
                                                         boxShadow: `0 6px 20px ${alpha('#5B8FB9', 0.4)}`,
                                                         transform: 'translateY(-2px)',
                                                     },
+                                                    '&:disabled': {
+                                                        backgroundColor: alpha('#5B8FB9', 0.5),
+                                                        color: 'white',
+                                                    },
                                                     transition: 'all 0.3s ease',
                                                 }}
                                             >
-                                                Send Message
+                                                {loading ? 'Sending...' : 'Send Message'}
                                             </Button>
                                         </Grid>
                                     </Grid>
@@ -494,17 +521,17 @@ const ContactUs = () => {
             </Grid>
 
             <Snackbar
-                open={openSnackbar}
+                open={snackbarOpen}
                 autoHideDuration={6000}
                 onClose={handleCloseSnackbar}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
                 <Alert
                     onClose={handleCloseSnackbar}
-                    severity="success"
+                    severity={snackbarSeverity}
                     sx={{ width: '100%', borderRadius: '8px' }}
                 >
-                    Your message has been sent successfully! We'll get back to you soon.
+                    {snackbarMessage}
                 </Alert>
             </Snackbar>
         </Container>

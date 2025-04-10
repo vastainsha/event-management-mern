@@ -22,6 +22,7 @@ import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
+import Mailbox from './pages/Mailbox';
 
 function App() {
   return (
@@ -85,6 +86,14 @@ function App() {
                     element={
                       <ProtectedAdminRoute>
                         <AdminDashboard />
+                      </ProtectedAdminRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/mailbox"
+                    element={
+                      <ProtectedAdminRoute>
+                        <Mailbox />
                       </ProtectedAdminRoute>
                     }
                   />
