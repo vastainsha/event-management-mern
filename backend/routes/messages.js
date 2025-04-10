@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
-    
+
     const newMessage = new Message({
       name,
       email,
@@ -42,6 +42,61 @@ router.post('/', async (req, res) => {
   } catch (error) {
     console.error('Create message error:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update message status (admin only)
+router.patch('/:id', async (req, res) => {
+  try {
+    // Verify admin token
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied. Admin only.' });
+    }
+
+    // Validate the ID format
+    if (!req.params.id || req.params.id.length !== 24) {
+      return res.status(400).json({ message: 'Invalid message ID format' });
+    }
+
+    // Validate status value
+    if (!req.body.status || !['read', 'unread'].includes(req.body.status)) {
+      return res.status(400).json({ message: 'Invalid status value' });
+    }
+
+    const message = await Message.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
+    );
+
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    res.json(message);
+  } catch (error) {
+    console.error('Update message status error:', error);
+
+    // Provide more specific error messages
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expired' });
+    }
+
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
+
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
 });
 
@@ -72,20 +127,20 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Message deleted' });
   } catch (error) {
     console.error('Delete message error:', error);
-    
+
     // Provide more specific error messages
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({ message: 'Token expired' });
     }
-    
+
     if (error.name === 'CastError') {
       return res.status(400).json({ message: 'Invalid ID format' });
     }
-    
+
     res.status(500).json({ message: 'Server error: ' + error.message });
   }
 });

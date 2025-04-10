@@ -114,17 +114,32 @@ const Mailbox = () => {
     const handleStatusChange = async (id, currentStatus) => {
         try {
             const token = localStorage.getItem('adminToken');
+            if (!token) {
+                setError('Admin authentication required');
+                return;
+            }
+
             const newStatus = currentStatus === 'unread' ? 'read' : 'unread';
-            await axios.patch(`http://localhost:5000/api/messages/${id}`, 
+            const response = await axios.patch(
+                `http://localhost:5000/api/messages/${id}`,
                 { status: newStatus },
-                { headers: { Authorization: `Bearer ${token}` }}
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
             );
-            setMessages(messages.map(msg => 
-                msg._id === id ? { ...msg, status: newStatus } : msg
-            ));
+
+            if (response.data) {
+                setMessages(messages.map(msg =>
+                    msg._id === id ? { ...msg, status: newStatus } : msg
+                ));
+                setSuccess('Message status updated successfully');
+            }
         } catch (error) {
             console.error('Error updating message status:', error);
-            setError('Failed to update message status');
+            setError(error.response?.data?.message || 'Failed to update message status');
         }
     };
 
@@ -145,11 +160,11 @@ const Mailbox = () => {
 
     const filteredMessages = messages.filter(message => {
         const matchesSearch = message.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            message.email.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesFilter = filter === 'all' || 
-                            (filter === 'unread' && message.status === 'unread') ||
-                            (filter === 'read' && message.status === 'read');
+            message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            message.email.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesFilter = filter === 'all' ||
+            (filter === 'unread' && message.status === 'unread') ||
+            (filter === 'read' && message.status === 'read');
         return matchesSearch && matchesFilter;
     });
 
@@ -159,9 +174,9 @@ const Mailbox = () => {
 
     const renderMessageCard = (message, index) => (
         <Zoom in={true} timeout={300 + index * 100} key={message._id}>
-            <Card 
+            <Card
                 elevation={0}
-                sx={{ 
+                sx={{
                     mb: 2,
                     borderRadius: '16px',
                     border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
@@ -173,87 +188,100 @@ const Mailbox = () => {
                     }
                 }}
             >
-                <CardContent sx={{ pb: 1 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Badge
-                                color="primary"
-                                variant="dot"
-                                invisible={message.status !== 'unread'}
-                                sx={{ mr: 1 }}
-                            >
-                                <Avatar 
-                                    sx={{ 
-                                        bgcolor: alpha(getStatusColor(message.status), 0.1),
-                                        color: getStatusColor(message.status),
-                                        width: 40,
-                                        height: 40,
-                                    }}
+                <Box
+                    onClick={() => handleViewMessage(message)}
+                    sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                            backgroundColor: alpha(theme.palette.primary.main, 0.05),
+                        }
+                    }}
+                >
+                    <CardContent sx={{ pb: 1 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Badge
+                                    color="primary"
+                                    variant="dot"
+                                    invisible={message.status !== 'unread'}
+                                    sx={{ mr: 1 }}
                                 >
-                                    {message.name.charAt(0).toUpperCase()}
-                                </Avatar>
-                            </Badge>
-                            <Box>
-                                <Typography variant="subtitle1" sx={{ 
-                                    fontWeight: message.status === 'unread' ? 600 : 400,
-                                    color: message.status === 'unread' ? 
-                                        theme.palette.text.primary : 
-                                        theme.palette.text.secondary,
-                                }}>
-                                    {message.name}
+                                    <Avatar
+                                        sx={{
+                                            bgcolor: alpha(getStatusColor(message.status), 0.1),
+                                            color: getStatusColor(message.status),
+                                            width: 40,
+                                            height: 40,
+                                        }}
+                                    >
+                                        {message.name.charAt(0).toUpperCase()}
+                                    </Avatar>
+                                </Badge>
+                                <Box>
+                                    <Typography variant="subtitle1" sx={{
+                                        fontWeight: message.status === 'unread' ? 600 : 400,
+                                        color: message.status === 'unread' ?
+                                            theme.palette.text.primary :
+                                            theme.palette.text.secondary,
+                                    }}>
+                                        {message.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {message.email}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="caption" color="text.secondary" sx={{ mr: 1 }}>
+                                    {format(new Date(message.createdAt), 'MMM d, yyyy')}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {message.email}
-                                </Typography>
+                                <IconButton
+                                    size="small"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleMenuOpen(e, message._id);
+                                    }}
+                                    sx={{ color: 'text.secondary' }}
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
                             </Box>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant="caption" color="text.secondary" sx={{ mr: 1 }}>
-                                {format(new Date(message.createdAt), 'MMM d, yyyy')}
-                            </Typography>
-                            <IconButton 
-                                size="small" 
-                                onClick={(e) => handleMenuOpen(e, message._id)}
-                                sx={{ color: 'text.secondary' }}
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
-                        </Box>
-                    </Box>
-                    
-                    <Typography 
-                        variant="h6" 
-                        sx={{ 
-                            mb: 1,
-                            fontWeight: message.status === 'unread' ? 600 : 500,
-                            color: message.status === 'unread' ? 
-                                theme.palette.text.primary : 
-                                theme.palette.text.secondary,
-                        }}
-                    >
-                        {message.subject}
-                    </Typography>
-                    
-                    <Typography 
-                        variant="body2" 
-                        color="text.secondary"
-                        sx={{ 
-                            display: '-webkit-box',
-                            WebkitLineClamp: 3,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                        }}
-                    >
-                        {message.message}
-                    </Typography>
-                </CardContent>
-                
+
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                mb: 1,
+                                fontWeight: message.status === 'unread' ? 600 : 500,
+                                color: message.status === 'unread' ?
+                                    theme.palette.text.primary :
+                                    theme.palette.text.secondary,
+                            }}
+                        >
+                            {message.subject}
+                        </Typography>
+
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{
+                                display: '-webkit-box',
+                                WebkitLineClamp: 3,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                            }}
+                        >
+                            {message.message}
+                        </Typography>
+                    </CardContent>
+                </Box>
+
                 <CardActions sx={{ px: 2, py: 1, justifyContent: 'space-between' }}>
                     <Box>
-                        <Chip 
-                            size="small" 
-                            label={message.status === 'unread' ? 'Unread' : 'Read'} 
+                        <Chip
+                            size="small"
+                            label={message.status === 'unread' ? 'Unread' : 'Read'}
                             color={message.status === 'unread' ? 'primary' : 'default'}
                             variant={message.status === 'unread' ? 'filled' : 'outlined'}
                             sx={{ mr: 1 }}
@@ -263,7 +291,10 @@ const Mailbox = () => {
                         <Tooltip title={message.status === 'unread' ? 'Mark as read' : 'Mark as unread'}>
                             <IconButton
                                 size="small"
-                                onClick={() => handleStatusChange(message._id, message.status)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStatusChange(message._id, message.status);
+                                }}
                                 sx={{
                                     color: getStatusColor(message.status),
                                     '&:hover': {
@@ -277,7 +308,10 @@ const Mailbox = () => {
                         <Tooltip title="Delete message">
                             <IconButton
                                 size="small"
-                                onClick={() => handleDelete(message._id)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete(message._id);
+                                }}
                                 sx={{
                                     color: theme.palette.error.main,
                                     '&:hover': {
@@ -315,8 +349,8 @@ const Mailbox = () => {
                         invisible={message.status !== 'unread'}
                         sx={{ mr: 2 }}
                     >
-                        <Avatar 
-                            sx={{ 
+                        <Avatar
+                            sx={{
                                 bgcolor: alpha(getStatusColor(message.status), 0.1),
                                 color: getStatusColor(message.status),
                                 width: 36,
@@ -326,14 +360,14 @@ const Mailbox = () => {
                             {message.name.charAt(0).toUpperCase()}
                         </Avatar>
                     </Badge>
-                    
+
                     <Box sx={{ flexGrow: 1 }}>
-                        <Typography 
-                            variant="subtitle1" 
-                            sx={{ 
+                        <Typography
+                            variant="subtitle1"
+                            sx={{
                                 fontWeight: message.status === 'unread' ? 600 : 400,
-                                color: message.status === 'unread' ? 
-                                    theme.palette.text.primary : 
+                                color: message.status === 'unread' ?
+                                    theme.palette.text.primary :
                                     theme.palette.text.secondary,
                             }}
                         >
@@ -343,7 +377,7 @@ const Mailbox = () => {
                             {message.name} • {message.email}
                         </Typography>
                     </Box>
-                    
+
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography variant="caption" color="text.secondary" sx={{ mr: 1 }}>
                             {format(new Date(message.createdAt), 'MMM d, yyyy')}
@@ -386,13 +420,13 @@ const Mailbox = () => {
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Fade in={true} timeout={800}>
                 <Box>
-                    <Box sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
-                        mb: 4 
+                        mb: 4
                     }}>
-                        <Typography variant="h4" component="h1" sx={{ 
+                        <Typography variant="h4" component="h1" sx={{
                             fontWeight: 700,
                             color: theme.palette.primary.main,
                             display: 'flex',
@@ -470,10 +504,10 @@ const Mailbox = () => {
                                     {filteredMessages.map((message, index) => renderMessageList(message, index))}
                                 </Box>
                             )}
-                            
+
                             {filteredMessages.length === 0 && (
-                                <Box sx={{ 
-                                    py: 8, 
+                                <Box sx={{
+                                    py: 8,
                                     textAlign: 'center',
                                     color: 'text.secondary'
                                 }}>
@@ -506,9 +540,9 @@ const Mailbox = () => {
             >
                 {selectedMessage && (
                     <>
-                        <DialogTitle sx={{ 
-                            pb: 1, 
-                            display: 'flex', 
+                        <DialogTitle sx={{
+                            pb: 1,
+                            display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center'
                         }}>
@@ -516,15 +550,15 @@ const Mailbox = () => {
                                 {selectedMessage.subject}
                             </Typography>
                             <Box>
-                                <Chip 
-                                    size="small" 
-                                    label={selectedMessage.status === 'unread' ? 'Unread' : 'Read'} 
+                                <Chip
+                                    size="small"
+                                    label={selectedMessage.status === 'unread' ? 'Unread' : 'Read'}
                                     color={selectedMessage.status === 'unread' ? 'primary' : 'default'}
                                     variant={selectedMessage.status === 'unread' ? 'filled' : 'outlined'}
                                     sx={{ mr: 1 }}
                                 />
-                                <IconButton 
-                                    size="small" 
+                                <IconButton
+                                    size="small"
                                     onClick={() => setSelectedMessage(null)}
                                     sx={{ color: 'text.secondary' }}
                                 >
@@ -535,8 +569,8 @@ const Mailbox = () => {
                         <Divider />
                         <DialogContent sx={{ pt: 3 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                                <Avatar 
-                                    sx={{ 
+                                <Avatar
+                                    sx={{
                                         bgcolor: alpha(getStatusColor(selectedMessage.status), 0.1),
                                         color: getStatusColor(selectedMessage.status),
                                         width: 48,
@@ -555,29 +589,29 @@ const Mailbox = () => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            
+
                             <Box sx={{ mb: 3 }}>
                                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                                     <AccessTimeIcon sx={{ fontSize: 16, mr: 1, verticalAlign: 'middle' }} />
                                     {format(new Date(selectedMessage.createdAt), 'MMMM d, yyyy h:mm a')}
                                 </Typography>
                             </Box>
-                            
+
                             <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
                                 {selectedMessage.message}
                             </Typography>
                         </DialogContent>
                         <Divider />
                         <DialogActions sx={{ p: 2 }}>
-                            <Button 
-                                variant="outlined" 
+                            <Button
+                                variant="outlined"
                                 onClick={() => setSelectedMessage(null)}
                                 sx={{ borderRadius: '8px' }}
                             >
                                 Close
                             </Button>
-                            <Button 
-                                variant="contained" 
+                            <Button
+                                variant="contained"
                                 color="primary"
                                 onClick={() => {
                                     handleStatusChange(selectedMessage._id, selectedMessage.status);
@@ -621,14 +655,14 @@ const Mailbox = () => {
                     handleMenuClose();
                 }}>
                     <ListItemIcon>
-                        {messages.find(m => m._id === selectedMessageId)?.status === 'unread' ? 
-                            <MarkEmailReadIcon fontSize="small" /> : 
+                        {messages.find(m => m._id === selectedMessageId)?.status === 'unread' ?
+                            <MarkEmailReadIcon fontSize="small" /> :
                             <MarkEmailUnreadIcon fontSize="small" />
                         }
                     </ListItemIcon>
                     <ListItemText>
-                        {messages.find(m => m._id === selectedMessageId)?.status === 'unread' ? 
-                            'Mark as Read' : 
+                        {messages.find(m => m._id === selectedMessageId)?.status === 'unread' ?
+                            'Mark as Read' :
                             'Mark as Unread'
                         }
                     </ListItemText>
