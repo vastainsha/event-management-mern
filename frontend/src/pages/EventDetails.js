@@ -196,7 +196,7 @@ const EventDetails = () => {
   const handleDownloadReceipt = () => {
     const receiptWindow = window.open('', '_blank');
     const currentDate = new Date().toLocaleDateString();
-    
+
     receiptWindow.document.write(`
       <html>
         <head>
@@ -464,11 +464,10 @@ const EventDetails = () => {
               <div class="section-title">Payment Information</div>
               <div class="info-row">
                 <span class="info-label">Payment Method:</span>
-                <span class="info-value">${
-                  paymentMethod === 'card' ? 'Credit/Debit Card' : 
-                  paymentMethod === 'googlepay' ? 'Google Pay' : 
-                  paymentMethod === 'phonepe' ? 'PhonePe' : 'Paytm'
-                }</span>
+                <span class="info-value">${paymentMethod === 'card' ? 'Credit/Debit Card' :
+        paymentMethod === 'googlepay' ? 'Google Pay' :
+          paymentMethod === 'phonepe' ? 'PhonePe' : 'Paytm'
+      }</span>
               </div>
               <div class="info-row">
                 <span class="info-label">Payment Status:</span>
@@ -487,7 +486,7 @@ const EventDetails = () => {
               <p>Thank you for choosing Events and Vibes!</p>
               <div class="contact-info">
                 <p>For any queries, please contact us at:</p>
-                <p>Email: support@eventsandvibes.com</p>
+                <p>Email: info@eventsandvibes.com</p>
                 <p>Phone: +91 98765 43210</p>
                 <p>Address: 123 Event Street, Pune, Maharashtra 411001</p>
               </div>
@@ -513,7 +512,7 @@ const EventDetails = () => {
         </body>
       </html>
     `);
-    
+
     receiptWindow.document.close();
     receiptWindow.focus();
   };
@@ -539,7 +538,7 @@ const EventDetails = () => {
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
         Booking Details
       </Typography>
-      
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
@@ -668,7 +667,7 @@ const EventDetails = () => {
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
         Payment Details
       </Typography>
-      
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Card sx={{ p: 3, height: '100%' }}>
@@ -698,7 +697,7 @@ const EventDetails = () => {
             </Box>
           </Card>
         </Grid>
-        
+
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3, height: '100%' }}>
             <Grid container spacing={3}>
@@ -706,15 +705,15 @@ const EventDetails = () => {
                 <Typography variant="h6" gutterBottom>
                   Select Payment Method
                 </Typography>
-                
+
                 <FormControl component="fieldset" sx={{ width: '100%', mt: 2 }}>
                   <RadioGroup
                     value={paymentMethod}
                     onChange={handlePaymentMethodChange}
                     sx={{ gap: 1 }}
                   >
-                    <Card sx={{ 
-                      p: 1.5, 
+                    <Card sx={{
+                      p: 1.5,
                       cursor: 'pointer',
                       border: paymentMethod === 'card' ? `2px solid ${theme.palette.primary.main}` : '1px solid #e0e0e0',
                       '&:hover': { borderColor: theme.palette.primary.main }
@@ -731,8 +730,8 @@ const EventDetails = () => {
                       />
                     </Card>
 
-                    <Card sx={{ 
-                      p: 1.5, 
+                    <Card sx={{
+                      p: 1.5,
                       cursor: 'pointer',
                       border: paymentMethod === 'googlepay' ? `2px solid ${theme.palette.primary.main}` : '1px solid #e0e0e0',
                       '&:hover': { borderColor: theme.palette.primary.main }
@@ -749,8 +748,8 @@ const EventDetails = () => {
                       />
                     </Card>
 
-                    <Card sx={{ 
-                      p: 1.5, 
+                    <Card sx={{
+                      p: 1.5,
                       cursor: 'pointer',
                       border: paymentMethod === 'phonepe' ? `2px solid ${theme.palette.primary.main}` : '1px solid #e0e0e0',
                       '&:hover': { borderColor: theme.palette.primary.main }
@@ -767,8 +766,8 @@ const EventDetails = () => {
                       />
                     </Card>
 
-                    <Card sx={{ 
-                      p: 1.5, 
+                    <Card sx={{
+                      p: 1.5,
                       cursor: 'pointer',
                       border: paymentMethod === 'paytm' ? `2px solid ${theme.palette.primary.main}` : '1px solid #e0e0e0',
                       '&:hover': { borderColor: theme.palette.primary.main }
@@ -938,13 +937,13 @@ const EventDetails = () => {
                   </Box>
                 )}
               </Grid>
-              
+
               <Grid item xs={12} md={6}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
                   <Typography variant="h6" gutterBottom>
                     Scan QR Code
                   </Typography>
-                  
+
                   {paymentMethod === 'card' && (
                     <Box sx={{ textAlign: 'center', py: 3 }}>
                       <CreditCardIcon sx={{ fontSize: 50, color: 'text.secondary', mb: 2 }} />
@@ -953,23 +952,23 @@ const EventDetails = () => {
                       </Typography>
                     </Box>
                   )}
-                  
+
                   {paymentMethod === 'googlepay' && (
                     <Box sx={{ textAlign: 'center' }}>
                       <Typography variant="body2" color="text.secondary" paragraph>
                         Scan this QR code with your Google Pay app
                       </Typography>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
                         mb: 2,
                         p: 1,
                         border: '1px dashed #ccc',
                         borderRadius: 1
                       }}>
-                        <Box 
-                          component="img" 
-                          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=eventsandvibes@okicici&pn=Events%20and%20Vibes&am=${selectedPackage.price}&cu=INR`} 
+                        <Box
+                          component="img"
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=eventsandvibes@okicici&pn=Events%20and%20Vibes&am=${selectedPackage.price}&cu=INR`}
                           alt="Google Pay QR Code"
                           sx={{ width: 150, height: 150 }}
                         />
@@ -979,23 +978,23 @@ const EventDetails = () => {
                       </Typography>
                     </Box>
                   )}
-                  
+
                   {paymentMethod === 'phonepe' && (
                     <Box sx={{ textAlign: 'center' }}>
                       <Typography variant="body2" color="text.secondary" paragraph>
                         Scan this QR code with your PhonePe app
                       </Typography>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
                         mb: 2,
                         p: 1,
                         border: '1px dashed #ccc',
                         borderRadius: 1
                       }}>
-                        <Box 
-                          component="img" 
-                          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=eventsandvibes@ybl&pn=Events%20and%20Vibes&am=${selectedPackage.price}&cu=INR`} 
+                        <Box
+                          component="img"
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=eventsandvibes@ybl&pn=Events%20and%20Vibes&am=${selectedPackage.price}&cu=INR`}
                           alt="PhonePe QR Code"
                           sx={{ width: 150, height: 150 }}
                         />
@@ -1005,23 +1004,23 @@ const EventDetails = () => {
                       </Typography>
                     </Box>
                   )}
-                  
+
                   {paymentMethod === 'paytm' && (
                     <Box sx={{ textAlign: 'center' }}>
                       <Typography variant="body2" color="text.secondary" paragraph>
                         Scan this QR code with your Paytm app
                       </Typography>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
                         mb: 2,
                         p: 1,
                         border: '1px dashed #ccc',
                         borderRadius: 1
                       }}>
-                        <Box 
-                          component="img" 
-                          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=eventsandvibes@paytm&pn=Events%20and%20Vibes&am=${selectedPackage.price}&cu=INR`} 
+                        <Box
+                          component="img"
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=eventsandvibes@paytm&pn=Events%20and%20Vibes&am=${selectedPackage.price}&cu=INR`}
                           alt="Paytm QR Code"
                           sx={{ width: 150, height: 150 }}
                         />
@@ -1049,7 +1048,7 @@ const EventDetails = () => {
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
         Booking Confirmation
       </Typography>
-      
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3, height: '100%' }}>
@@ -1059,17 +1058,17 @@ const EventDetails = () => {
                 Booking Successful!
               </Typography>
             </Box>
-            
+
             <Typography variant="body1" paragraph>
               Thank you for booking with Events and Vibes. Your event has been successfully scheduled.
             </Typography>
-            
+
             <Divider sx={{ my: 3 }} />
-            
+
             <Typography variant="h6" gutterBottom>
               Booking Details
             </Typography>
-            
+
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
@@ -1081,7 +1080,7 @@ const EventDetails = () => {
                   </Typography>
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -1092,7 +1091,7 @@ const EventDetails = () => {
                   </Typography>
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -1103,7 +1102,7 @@ const EventDetails = () => {
                   </Typography>
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -1114,7 +1113,7 @@ const EventDetails = () => {
                   </Typography>
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -1125,7 +1124,7 @@ const EventDetails = () => {
                   </Typography>
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -1137,29 +1136,29 @@ const EventDetails = () => {
                     {paymentMethod === 'phonepe' && <PhoneAndroidIcon sx={{ mr: 1, color: '#5f259f' }} />}
                     {paymentMethod === 'paytm' && <AccountBalanceWalletIcon sx={{ mr: 1, color: '#00BAF2' }} />}
                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                      {paymentMethod === 'card' ? 'Credit/Debit Card' : 
-                       paymentMethod === 'googlepay' ? 'Google Pay' : 
-                       paymentMethod === 'phonepe' ? 'PhonePe' : 'Paytm'}
+                      {paymentMethod === 'card' ? 'Credit/Debit Card' :
+                        paymentMethod === 'googlepay' ? 'Google Pay' :
+                          paymentMethod === 'phonepe' ? 'PhonePe' : 'Paytm'}
                     </Typography>
                   </Box>
                 </Box>
               </Grid>
             </Grid>
-            
+
             <Divider sx={{ my: 3 }} />
-            
+
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography variant="h6">Total Amount Paid:</Typography>
               <Typography variant="h5" color="primary" fontWeight="bold">
                 ₹{selectedPackage.price}
               </Typography>
             </Box>
-            
+
             <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
                 onClick={handleDownloadReceipt}
-                sx={{ 
+                sx={{
                   py: 1.5,
                   px: 3,
                   fontWeight: 600
@@ -1167,10 +1166,10 @@ const EventDetails = () => {
               >
                 Download Receipt
               </Button>
-              <Button 
-                variant="outlined" 
+              <Button
+                variant="outlined"
                 onClick={() => navigate('/events')}
-                sx={{ 
+                sx={{
                   py: 1.5,
                   px: 3
                 }}
@@ -1180,13 +1179,13 @@ const EventDetails = () => {
             </Box>
           </Card>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Card sx={{ p: 3, height: '100%', bgcolor: alpha(theme.palette.primary.main, 0.05) }}>
             <Typography variant="h6" gutterBottom>
               Package Features
             </Typography>
-            
+
             <List>
               {selectedPackage.features.map((feature, index) => (
                 <ListItem key={index} disablePadding sx={{ py: 1 }}>
@@ -1197,7 +1196,7 @@ const EventDetails = () => {
                 </ListItem>
               ))}
             </List>
-            
+
             <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                 Need Assistance?
@@ -1205,8 +1204,8 @@ const EventDetails = () => {
               <Typography variant="body2" paragraph>
                 Our team is here to help you with any questions about your booking.
               </Typography>
-              <Button 
-                variant="text" 
+              <Button
+                variant="text"
                 startIcon={<PhoneAndroidIcon />}
                 sx={{ color: theme.palette.primary.main }}
               >
@@ -1382,8 +1381,8 @@ const EventDetails = () => {
                             cursor: 'pointer',
                             transition: 'all 0.3s ease',
                             transform: selectedPackage?.name === pkg.name ? 'scale(1.02)' : 'none',
-                            border: selectedPackage?.name === pkg.name 
-                              ? `3px solid ${theme.palette.primary.main}` 
+                            border: selectedPackage?.name === pkg.name
+                              ? `3px solid ${theme.palette.primary.main}`
                               : '1px solid #e0e0e0',
                             position: 'relative',
                             '&:hover': {
@@ -1468,10 +1467,10 @@ const EventDetails = () => {
               {/* Selected Package Summary */}
               {selectedPackage && (
                 <Grid item xs={12}>
-                  <Card 
-                    sx={{ 
-                      p: 3, 
-                      mt: 4, 
+                  <Card
+                    sx={{
+                      p: 3,
+                      mt: 4,
                       bgcolor: alpha(theme.palette.primary.main, 0.05),
                       border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
                       borderRadius: 2,
@@ -1483,7 +1482,7 @@ const EventDetails = () => {
                         Selected Package: {selectedPackage.name}
                       </Typography>
                     </Box>
-                    
+
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6} md={3}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -1493,7 +1492,7 @@ const EventDetails = () => {
                           </Typography>
                         </Box>
                       </Grid>
-                      
+
                       <Grid item xs={12} sm={6} md={3}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <GroupIcon sx={{ mr: 1, color: 'text.secondary' }} />
@@ -1502,7 +1501,7 @@ const EventDetails = () => {
                           </Typography>
                         </Box>
                       </Grid>
-                      
+
                       <Grid item xs={12} sm={6} md={3}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <CheckCircleOutlineIcon sx={{ mr: 1, color: 'text.secondary' }} />
@@ -1511,7 +1510,7 @@ const EventDetails = () => {
                           </Typography>
                         </Box>
                       </Grid>
-                      
+
                       <Grid item xs={12} sm={6} md={3}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <CreditCardIcon sx={{ mr: 1, color: 'text.secondary' }} />

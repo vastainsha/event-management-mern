@@ -104,7 +104,7 @@ const MyBookings = () => {
   const handleDownloadReceipt = (booking) => {
     const receiptWindow = window.open('', '_blank');
     const currentDate = new Date().toLocaleDateString();
-    
+
     receiptWindow.document.write(`
       <html>
         <head>
@@ -342,7 +342,9 @@ const MyBookings = () => {
 
             <div class="footer">
               <p>Thank you for choosing Events and Vibes!</p>
-              <p>For queries: support@eventsandvibes.com | +91 98765 43210</p>
+              <Typography variant="body2" color="text.secondary" align="center">
+                <p>For queries: info@eventsandvibes.com | +91 98765 43210</p>
+              </Typography>
             </div>
           </div>
 
@@ -365,7 +367,7 @@ const MyBookings = () => {
         </body>
       </html>
     `);
-    
+
     receiptWindow.document.close();
     receiptWindow.focus();
   };
@@ -480,7 +482,7 @@ const MyBookings = () => {
       <Grid container spacing={3}>
         {filteredBookings.map((booking) => (
           <Grid item xs={12} key={booking._id}>
-            <Card 
+            <Card
               elevation={2}
               sx={{
                 transition: 'transform 0.2s, box-shadow 0.2s',

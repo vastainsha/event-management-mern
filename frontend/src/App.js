@@ -19,6 +19,9 @@ import theme from './theme';
 import './styles/global.css';
 import AdminLogin from './pages/AdminLogin';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import ContactUs from './pages/ContactUs';
+import AboutUs from './pages/AboutUs';
+import FAQ from './pages/FAQ';
 
 function App() {
   return (
@@ -34,9 +37,9 @@ function App() {
               }}
             >
               <Navbar />
-              <Box 
-                component="main" 
-                sx={{ 
+              <Box
+                component="main"
+                sx={{
                   flexGrow: 1,
                   pt: { xs: 8, sm: 9 },
                   minHeight: '100vh',
@@ -49,6 +52,9 @@ function App() {
                   <Route path="/register" element={<Register />} />
                   <Route path="/events" element={<Events />} />
                   <Route path="/events/:id" element={<EventDetails />} />
+                  <Route path="/contact" element={<ContactUs />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/faq" element={<FAQ />} />
                   <Route
                     path="/booking/:eventId"
                     element={

@@ -266,7 +266,7 @@ const Footer = () => {
               India
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.8 }}>
-              Email: support@eventsandvibes.com
+              Email: info@eventsandvibes.com
               <br />
               Phone: +91 98765 43210
             </Typography>

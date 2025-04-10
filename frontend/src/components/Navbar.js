@@ -32,6 +32,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import GroupsIcon from '@mui/icons-material/Groups';
+import HelpIcon from '@mui/icons-material/Help';
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 
@@ -100,9 +104,10 @@ const Navbar = () => {
 
   const menuItems = [
     { text: 'Events', path: '/events', icon: <EventIcon /> },
-    ...(user && !isAdmin
-      ? [{ text: 'My Bookings', path: '/my-bookings', icon: <EventIcon /> }]
-      : []),
+    { text: 'My Bookings', path: '/my-bookings', icon: <BookOnlineIcon /> },
+    { text: 'FAQ', path: '/faq', icon: <HelpIcon /> },
+    { text: 'About Us', path: '/about', icon: <GroupsIcon /> },
+    { text: 'Contact', path: '/contact', icon: <ContactMailIcon /> },
     ...(isAdmin
       ? [{ text: 'Admin Dashboard', path: '/admin/dashboard', icon: <DashboardIcon /> }]
       : []),
@@ -113,15 +118,15 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar 
-      position="fixed" 
+    <AppBar
+      position="fixed"
       elevation={scrolled ? 4 : 0}
       sx={{
         backgroundColor: 'white',
         borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
         transition: 'all 0.3s ease',
-        boxShadow: scrolled 
-          ? '0px 4px 20px rgba(0, 0, 0, 0.08)' 
+        boxShadow: scrolled
+          ? '0px 4px 20px rgba(0, 0, 0, 0.08)'
           : 'none',
       }}
     >
@@ -150,7 +155,7 @@ const Navbar = () => {
             <EventIcon sx={{ mr: 1, fontSize: '1.5rem' }} />
             Events & Vibes
           </Typography>
-          
+
           {isMobile ? (
             <>
               <IconButton
@@ -204,8 +209,8 @@ const Navbar = () => {
                         sx={{
                           py: 1.5,
                           transition: 'all 0.3s ease',
-                          backgroundColor: isActive(item.path) 
-                            ? alpha(theme.palette.primary.main, 0.08) 
+                          backgroundColor: isActive(item.path)
+                            ? alpha(theme.palette.primary.main, 0.08)
                             : 'transparent',
                           '&:hover': {
                             backgroundColor: alpha(theme.palette.primary.main, 0.12),
@@ -213,20 +218,20 @@ const Navbar = () => {
                           },
                         }}
                       >
-                        <ListItemIcon sx={{ 
-                          color: isActive(item.path) 
-                            ? theme.palette.primary.main 
+                        <ListItemIcon sx={{
+                          color: isActive(item.path)
+                            ? theme.palette.primary.main
                             : theme.palette.text.secondary,
                           minWidth: '40px',
                         }}>
                           {item.icon}
                         </ListItemIcon>
-                        <ListItemText 
+                        <ListItemText
                           primary={item.text}
                           sx={{
                             '& .MuiTypography-root': {
-                              color: isActive(item.path) 
-                                ? theme.palette.primary.main 
+                              color: isActive(item.path)
+                                ? theme.palette.primary.main
                                 : theme.palette.text.primary,
                               fontWeight: isActive(item.path) ? 600 : 500,
                             },
@@ -236,7 +241,7 @@ const Navbar = () => {
                       {index < menuItems.length - 1 && <Divider />}
                     </React.Fragment>
                   ))}
-                  
+
                   {!user && !isAdmin && (
                     <>
                       <ListItem
@@ -247,8 +252,8 @@ const Navbar = () => {
                         sx={{
                           py: 1.5,
                           transition: 'all 0.3s ease',
-                          backgroundColor: isActive('/login') 
-                            ? alpha(theme.palette.primary.main, 0.08) 
+                          backgroundColor: isActive('/login')
+                            ? alpha(theme.palette.primary.main, 0.08)
                             : 'transparent',
                           '&:hover': {
                             backgroundColor: alpha(theme.palette.primary.main, 0.12),
@@ -256,20 +261,20 @@ const Navbar = () => {
                           },
                         }}
                       >
-                        <ListItemIcon sx={{ 
-                          color: isActive('/login') 
-                            ? theme.palette.primary.main 
+                        <ListItemIcon sx={{
+                          color: isActive('/login')
+                            ? theme.palette.primary.main
                             : theme.palette.text.secondary,
                           minWidth: '40px',
                         }}>
                           <LoginIcon />
                         </ListItemIcon>
-                        <ListItemText 
+                        <ListItemText
                           primary="Login"
                           sx={{
                             '& .MuiTypography-root': {
-                              color: isActive('/login') 
-                                ? theme.palette.primary.main 
+                              color: isActive('/login')
+                                ? theme.palette.primary.main
                                 : theme.palette.text.primary,
                               fontWeight: isActive('/login') ? 600 : 500,
                             },
@@ -285,8 +290,8 @@ const Navbar = () => {
                         sx={{
                           py: 1.5,
                           transition: 'all 0.3s ease',
-                          backgroundColor: isActive('/register') 
-                            ? alpha(theme.palette.primary.main, 0.08) 
+                          backgroundColor: isActive('/register')
+                            ? alpha(theme.palette.primary.main, 0.08)
                             : 'transparent',
                           '&:hover': {
                             backgroundColor: alpha(theme.palette.primary.main, 0.12),
@@ -294,20 +299,20 @@ const Navbar = () => {
                           },
                         }}
                       >
-                        <ListItemIcon sx={{ 
-                          color: isActive('/register') 
-                            ? theme.palette.primary.main 
+                        <ListItemIcon sx={{
+                          color: isActive('/register')
+                            ? theme.palette.primary.main
                             : theme.palette.text.secondary,
                           minWidth: '40px',
                         }}>
                           <AppRegistrationIcon />
                         </ListItemIcon>
-                        <ListItemText 
+                        <ListItemText
                           primary="Register"
                           sx={{
                             '& .MuiTypography-root': {
-                              color: isActive('/register') 
-                                ? theme.palette.primary.main 
+                              color: isActive('/register')
+                                ? theme.palette.primary.main
                                 : theme.palette.text.primary,
                               fontWeight: isActive('/register') ? 600 : 500,
                             },
@@ -316,7 +321,7 @@ const Navbar = () => {
                       </ListItem>
                     </>
                   )}
-                  
+
                   {(user || isAdmin) && (
                     <>
                       <Divider sx={{ my: 1 }} />
@@ -335,7 +340,7 @@ const Navbar = () => {
                         <ListItemIcon sx={{ color: theme.palette.error.main, minWidth: '40px' }}>
                           <LogoutIcon />
                         </ListItemIcon>
-                        <ListItemText 
+                        <ListItemText
                           primary="Logout"
                           sx={{
                             '& .MuiTypography-root': {
@@ -359,7 +364,7 @@ const Navbar = () => {
                   component={RouterLink}
                   to={item.path}
                   startIcon={item.icon}
-                  sx={{ 
+                  sx={{
                     fontWeight: 500,
                     position: 'relative',
                     transition: 'all 0.3s ease',
@@ -379,15 +384,15 @@ const Navbar = () => {
                         width: '100%',
                       },
                     },
-                    color: isActive(item.path) 
-                      ? theme.palette.primary.main 
+                    color: isActive(item.path)
+                      ? theme.palette.primary.main
                       : theme.palette.text.primary,
                   }}
                 >
                   {item.text}
                 </Button>
               ))}
-              
+
               {(user || isAdmin) ? (
                 <Tooltip title="Account" arrow TransitionComponent={Fade}>
                   <IconButton
@@ -402,9 +407,9 @@ const Navbar = () => {
                       },
                     }}
                   >
-                    <Avatar 
-                      sx={{ 
-                        width: 32, 
+                    <Avatar
+                      sx={{
+                        width: 32,
                         height: 32,
                         bgcolor: theme.palette.primary.main,
                         fontSize: '0.9rem',
@@ -423,7 +428,7 @@ const Navbar = () => {
                         component={RouterLink}
                         to="/login"
                         startIcon={<LoginIcon />}
-                        sx={{ 
+                        sx={{
                           fontWeight: 500,
                           position: 'relative',
                           transition: 'all 0.3s ease',
@@ -443,8 +448,8 @@ const Navbar = () => {
                               width: '100%',
                             },
                           },
-                          color: isActive('/login') 
-                            ? theme.palette.primary.main 
+                          color: isActive('/login')
+                            ? theme.palette.primary.main
                             : theme.palette.text.primary,
                         }}
                       >
@@ -456,7 +461,7 @@ const Navbar = () => {
                         component={RouterLink}
                         to="/register"
                         startIcon={<AppRegistrationIcon />}
-                        sx={{ 
+                        sx={{
                           borderRadius: '20px',
                           px: 2,
                           py: 1,
@@ -473,7 +478,7 @@ const Navbar = () => {
                   )}
                 </>
               )}
-              
+
               <Menu
                 anchorEl={userMenuAnchor}
                 open={Boolean(userMenuAnchor)}
@@ -489,9 +494,9 @@ const Navbar = () => {
                 }}
               >
                 <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Avatar 
-                    sx={{ 
-                      width: 40, 
+                  <Avatar
+                    sx={{
+                      width: 40,
                       height: 40,
                       bgcolor: theme.palette.primary.main,
                     }}
@@ -509,7 +514,7 @@ const Navbar = () => {
                 </Box>
                 <Divider />
                 {!isAdmin && (
-                  <MenuItem 
+                  <MenuItem
                     onClick={() => {
                       navigate('/my-bookings');
                       handleUserMenuClose();
@@ -522,7 +527,7 @@ const Navbar = () => {
                     <ListItemText>My Bookings</ListItemText>
                   </MenuItem>
                 )}
-                <MenuItem 
+                <MenuItem
                   onClick={() => {
                     handleLogout();
                     handleUserMenuClose();
