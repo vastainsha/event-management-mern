@@ -135,7 +135,7 @@ const AdminDashboard = () => {
       setLoading(true);
       const token = localStorage.getItem('adminToken');
       console.log('Admin token:', token ? 'Present' : 'Missing');
-      
+
       if (!token) {
         navigate('/admin/login');
         return;
@@ -152,9 +152,9 @@ const AdminDashboard = () => {
 
       console.log('Fetching bookings from API...');
       const response = await api.get('/admin/bookings');
-      
+
       console.log('Bookings response:', response.data);
-      
+
       if (!response.data || !Array.isArray(response.data)) {
         throw new Error('Invalid response format from server');
       }
@@ -198,7 +198,7 @@ const AdminDashboard = () => {
         console.error('Error response:', error.response.data);
         console.error('Error status:', error.response.status);
         console.error('Error headers:', error.response.headers);
-        
+
         if (error.response.status === 401) {
           // Token expired or invalid
           localStorage.removeItem('adminToken');
@@ -698,13 +698,6 @@ const AdminDashboard = () => {
               Recent Bookings
             </Typography>
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button
-                variant="outlined"
-                startIcon={<DownloadIcon />}
-                onClick={() => {/* Handle export */ }}
-              >
-                Export
-              </Button>
               <Button
                 variant="contained"
                 startIcon={<PrintIcon />}

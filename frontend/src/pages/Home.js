@@ -13,7 +13,9 @@ import {
   CardActionArea,
   Chip,
   useTheme,
+  alpha,
 } from '@mui/material';
+import AnimatedCard from '../components/AnimatedCard';
 import axios from 'axios';
 
 const Home = () => {
@@ -142,30 +144,17 @@ const Home = () => {
           <Grid container spacing={3} justifyContent="center">
             {eventTypes.map((type) => (
               <Grid item xs={6} sm={3} key={type.name}>
-                <CardActionArea onClick={() => navigate(type.path)}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      p: 3,
-                      borderRadius: 3,
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: theme.shadows[8],
-                      }
-                    }}
-                  >
-                    <Typography variant="h2" sx={{ mb: 2 }}>
-                      {type.icon}
-                    </Typography>
-                    <Typography variant="h6" align="center">
-                      {type.name}
-                    </Typography>
-                  </Card>
-                </CardActionArea>
+                <AnimatedCard
+                  onClick={() => navigate(type.path)}
+                  sx={{ p: 3 }}
+                >
+                  <Typography variant="h2" sx={{ mb: 2, transition: 'transform 0.3s ease' }}>
+                    {type.icon}
+                  </Typography>
+                  <Typography variant="h6" align="center" sx={{ transition: 'color 0.3s ease' }}>
+                    {type.name}
+                  </Typography>
+                </AnimatedCard>
               </Grid>
             ))}
           </Grid>
@@ -191,69 +180,82 @@ const Home = () => {
           <Grid container spacing={4}>
             {featuredEvents.map((event) => (
               <Grid item xs={12} md={4} key={event._id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: theme.shadows[8],
-                    }
-                  }}
+                <AnimatedCard
+                  onClick={() => navigate(`/events/${event._id}`)}
                 >
-                  <CardActionArea onClick={() => navigate(`/events/${event._id}`)}>
-                    <CardMedia
-                      component="img"
-                      height="220"
-                      image={event.images[0] || 'https://via.placeholder.com/300x200'}
-                      alt={event.name}
-                    />
-                    <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                        <Typography
-                          variant="h5"
-                          component="h3"
-                          sx={{
-                            fontFamily: theme.typography.h1.fontFamily,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {event.name}
-                        </Typography>
-                        <Chip
-                          label={event.type.charAt(0).toUpperCase() + event.type.slice(1)}
-                          size="small"
-                          color="primary"
-                          sx={{ borderRadius: 1 }}
-                        />
-                      </Box>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                        {event.description}
+                  <CardMedia
+                    component="img"
+                    height="220"
+                    image={event.images[0] || 'https://via.placeholder.com/300x200'}
+                    alt={event.name}
+                    sx={{
+                      transition: 'transform 0.3s ease',
+                      borderRadius: '12px 12px 0 0',
+                    }}
+                  />
+                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                      <Typography
+                        variant="h5"
+                        component="h3"
+                        sx={{
+                          fontFamily: theme.typography.h1.fontFamily,
+                          fontWeight: 600,
+                          transition: 'color 0.3s ease',
+                        }}
+                      >
+                        {event.name}
                       </Typography>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="body2" color="text.secondary">
-                          Starting from ₹{event.packages[0]?.price || 'Contact us'}
-                        </Typography>
-                        <Button
-                          variant="text"
-                          color="primary"
-                          sx={{
-                            fontWeight: 600,
-                            '&:hover': {
-                              backgroundColor: 'rgba(51, 102, 255, 0.08)',
-                            }
-                          }}
-                        >
-                          View Details
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                      <Chip
+                        label={event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                        size="small"
+                        color="primary"
+                        sx={{
+                          borderRadius: 1,
+                          transition: 'transform 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.05)',
+                          }
+                        }}
+                      />
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        mb: 2,
+                        transition: 'color 0.3s ease',
+                      }}
+                    >
+                      {event.description}
+                    </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          transition: 'color 0.3s ease',
+                        }}
+                      >
+                        Starting from ₹{event.packages[0]?.price || 'Contact us'}
+                      </Typography>
+                      <Button
+                        variant="text"
+                        color="primary"
+                        sx={{
+                          fontWeight: 600,
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            backgroundColor: 'rgba(51, 102, 255, 0.08)',
+                            transform: 'translateX(4px)',
+                          }
+                        }}
+                      >
+                        View Details
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </AnimatedCard>
               </Grid>
             ))}
           </Grid>
