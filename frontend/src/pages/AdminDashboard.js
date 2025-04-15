@@ -132,22 +132,92 @@ const AdminDashboard = () => {
 
   const fetchBookings = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem('adminToken');
+      console.log('Admin token:', token ? 'Present' : 'Missing');
+      
       if (!token) {
         navigate('/admin/login');
         return;
       }
 
-      const response = await axios.get('http://localhost:5000/api/admin/bookings', {
-        headers: { Authorization: `Bearer ${token}` }
+      // Create axios instance with base URL
+      const api = axios.create({
+        baseURL: '/api',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
       });
 
-      // Filter out bookings with null events
-      const validBookings = response.data.filter(booking => booking.event && booking.user);
+      console.log('Fetching bookings from API...');
+      const response = await api.get('/admin/bookings');
+      
+      console.log('Bookings response:', response.data);
+      
+      if (!response.data || !Array.isArray(response.data)) {
+        throw new Error('Invalid response format from server');
+      }
+
+      // Log details about the first few bookings
+      response.data.slice(0, 3).forEach((booking, index) => {
+        console.log(`Frontend Booking ${index + 1}:`, {
+          id: booking._id,
+          eventId: booking.event?._id || booking.event,
+          hasUser: !!booking.user,
+          hasEvent: !!booking.event,
+          hasPackage: !!booking.package,
+          user: booking.user ? { id: booking.user._id, name: booking.user.name } : null,
+          event: booking.event ? { id: booking.event._id, name: booking.event.name } : null,
+          package: booking.package ? { id: booking.package._id, name: booking.package.name } : null
+        });
+      });
+
+      // Transform bookings with fallback values
+      const validBookings = response.data.map(booking => ({
+        ...booking,
+        hasEvent: !!booking.event,
+        eventName: booking.event?.name || 'Event Not Found',
+        eventType: booking.event?.type || 'Unknown',
+        userName: booking.user?.name || 'Unknown User',
+        packageName: booking.package?.name || 'Unknown Package',
+        status: booking.status || 'pending',
+        totalAmount: booking.totalAmount || 0,
+        eventDate: booking.eventDate || new Date().toISOString(),
+        guestCount: booking.guestCount || 0
+      }));
+
+      console.log('Valid bookings:', validBookings.length);
       setBookings(validBookings);
-      setLoading(false);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to fetch bookings');
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+        console.error('Error headers:', error.response.headers);
+        
+        if (error.response.status === 401) {
+          // Token expired or invalid
+          localStorage.removeItem('adminToken');
+          navigate('/admin/login');
+        } else if (error.response.status === 404) {
+          setError('Backend server not found. Please ensure the backend server is running on port 5000.');
+        } else {
+          setError(error.response.data.message || 'Failed to fetch bookings');
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Error request:', error.request);
+        setError('No response from server. Please check if the backend server is running.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error message:', error.message);
+        setError('Failed to fetch bookings: ' + error.message);
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -162,7 +232,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem('adminToken');
       await axios.patch(
-        `http://localhost:5000/api/admin/bookings/${selectedBooking._id}`,
+        `/api/admin/bookings/${selectedBooking._id}`,
         { status: actionType },
         { headers: { Authorization: `Bearer ${token}` } }
       );
