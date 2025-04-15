@@ -81,18 +81,30 @@ const FeatureCard = styled(Paper)(({ theme }) => ({
     justifyContent: 'center',
     textAlign: 'center',
     borderRadius: '16px',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
     background: '#5B8FB9',
     color: '#ffffff',
     boxShadow: `0 8px 32px ${alpha('#5B8FB9', 0.3)}`,
     '&:hover': {
-        transform: 'translateY(-5px)',
-        boxShadow: `0 12px 40px ${alpha('#5B8FB9', 0.4)}`,
+        transform: 'translateY(-8px) scale(1.02)',
+        boxShadow: `0 16px 48px ${alpha('#5B8FB9', 0.4)}`,
+        '& .MuiSvgIcon-root': {
+            transform: 'scale(1.1)',
+            transition: 'transform 0.3s ease',
+        },
+        '& .MuiTypography-h6': {
+            transform: 'scale(1.05)',
+            transition: 'transform 0.3s ease',
+        },
     },
     '& .MuiSvgIcon-root': {
         fontSize: 40,
         marginBottom: theme.spacing(2),
         animation: `${pulse} 2s infinite ease-in-out`,
+        transition: 'transform 0.3s ease',
+    },
+    '& .MuiTypography-h6': {
+        transition: 'transform 0.3s ease',
     },
 }));
 
@@ -105,23 +117,39 @@ const TeamCard = styled(Paper)(({ theme }) => ({
     justifyContent: 'center',
     textAlign: 'center',
     borderRadius: '16px',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
     background: alpha(theme.palette.background.paper, 0.8),
     boxShadow: `0 8px 32px ${alpha('#5B8FB9', 0.2)}`,
     '&:hover': {
-        transform: 'translateY(-5px)',
-        boxShadow: `0 12px 40px ${alpha('#5B8FB9', 0.3)}`,
+        transform: 'translateY(-8px) scale(1.02)',
+        boxShadow: `0 16px 48px ${alpha('#5B8FB9', 0.3)}`,
+        background: alpha(theme.palette.background.paper, 0.95),
+        '& .MuiTypography-h6': {
+            transform: 'scale(1.05)',
+            transition: 'transform 0.3s ease',
+        },
+        '& .MuiTypography-body2': {
+            transform: 'scale(1.02)',
+            transition: 'transform 0.3s ease',
+        },
     },
     '& .MuiAvatar-root': {
         width: 120,
         height: 120,
         marginBottom: theme.spacing(2),
         border: `4px solid ${alpha('#5B8FB9', 0.2)}`,
-        transition: 'all 0.3s ease',
+        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
         '&:hover': {
-            border: `4px solid ${alpha('#5B8FB9', 0.6)}`,
-            transform: 'scale(1.05)',
+            border: `4px solid ${alpha('#5B8FB9', 0.8)}`,
+            transform: 'scale(1.1)',
+            boxShadow: `0 8px 24px ${alpha('#5B8FB9', 0.3)}`,
         },
+    },
+    '& .MuiTypography-h6': {
+        transition: 'transform 0.3s ease',
+    },
+    '& .MuiTypography-body2': {
+        transition: 'transform 0.3s ease',
     },
 }));
 
@@ -133,12 +161,27 @@ const StatCard = styled(Paper)(({ theme }) => ({
     justifyContent: 'center',
     textAlign: 'center',
     borderRadius: '16px',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
     background: alpha(theme.palette.background.paper, 0.8),
     boxShadow: `0 8px 32px ${alpha('#5B8FB9', 0.2)}`,
     '&:hover': {
-        transform: 'translateY(-5px)',
-        boxShadow: `0 12px 40px ${alpha('#5B8FB9', 0.3)}`,
+        transform: 'translateY(-8px) scale(1.02)',
+        boxShadow: `0 16px 48px ${alpha('#5B8FB9', 0.3)}`,
+        background: alpha(theme.palette.background.paper, 0.95),
+        '& .MuiTypography-h4': {
+            transform: 'scale(1.1)',
+            transition: 'transform 0.3s ease',
+        },
+        '& .MuiTypography-body1': {
+            transform: 'scale(1.05)',
+            transition: 'transform 0.3s ease',
+        },
+    },
+    '& .MuiTypography-h4': {
+        transition: 'transform 0.3s ease',
+    },
+    '& .MuiTypography-body1': {
+        transition: 'transform 0.3s ease',
     },
 }));
 
