@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Booking = require('../models/Booking');
+const Message = require('../models/Message');
 const { adminAuth } = require('../middleware/auth');
 
 // Admin login
@@ -73,7 +74,7 @@ router.get('/bookings', adminAuth, async (req, res) => {
       .sort({ createdAt: -1 });
 
     console.log(`Found ${bookings.length} bookings`);
-    
+
     bookings.slice(0, 3).forEach((booking, index) => {
       console.log(`Booking ${index + 1}:`, {
         id: booking._id,
@@ -86,7 +87,7 @@ router.get('/bookings', adminAuth, async (req, res) => {
         package: booking.package ? { id: booking.package._id, name: booking.package.name } : null
       });
     });
-    
+
     res.json(bookings);
   } catch (error) {
     console.error('Get bookings error:', error);
@@ -108,6 +109,28 @@ router.patch('/bookings/:id', adminAuth, async (req, res) => {
     res.json(booking);
   } catch (error) {
     console.error('Update booking error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete all bookings (admin only)
+router.delete('/bookings/all', adminAuth, async (req, res) => {
+  try {
+    await Booking.deleteMany({});
+    res.json({ message: 'All bookings deleted successfully' });
+  } catch (error) {
+    console.error('Delete all bookings error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete all messages (admin only)
+router.delete('/messages/all', adminAuth, async (req, res) => {
+  try {
+    await Message.deleteMany({});
+    res.json({ message: 'All messages deleted successfully' });
+  } catch (error) {
+    console.error('Delete all messages error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

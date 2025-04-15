@@ -36,7 +36,7 @@ function App() {
             <Router>
               <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                 <Navbar />
-                <main style={{ flex: 1 }}>
+                <main style={{ flex: 1, paddingTop: '70px' }}>
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/events" element={<Events />} />

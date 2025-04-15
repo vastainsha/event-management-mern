@@ -277,7 +277,7 @@ const Footer = () => {
           © {currentYear} Events & Vibes. All rights reserved.
         </Typography>
         <Typography variant="body2" sx={{ opacity: 0.7 }} align="center">
-          © Aditya Maksare & Insha Vasta
+          © Vincent Mark
         </Typography>
       </Container>
     </Box>

@@ -170,17 +170,11 @@ const AboutUs = () => {
 
     const team = [
         {
-            name: 'Aditya Maksare',
+            name: 'Vincent Mark',
             role: 'CEO & Co-Founder',
             image: 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&clotheColor=Blue&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light',
             bio: 'With extensive experience in event management and technology, Aditya leads the company with innovative vision and strategic direction.',
-        },
-        {
-            name: 'Insha Vasta',
-            role: 'CEO & Co-Founder',
-            image: 'https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&clotheColor=PastelRed&eyeType=Happy&eyebrowType=Default&mouthType=Smile&skinColor=Light',
-            bio: 'Insha brings creativity and business acumen to the company, ensuring Events & Vibes delivers exceptional experiences to all clients.',
-        },
+        }
     ];
 
     const stats = [
@@ -434,16 +428,15 @@ const AboutUs = () => {
                     gutterBottom
                     sx={{
                         fontWeight: 700,
-                        color: '#5B8FB9',
                         textAlign: 'center',
                         mb: 4,
                     }}
                 >
                     Meet Our Team
                 </Typography>
-                <Grid container spacing={4}>
+                <Grid container spacing={4} justifyContent="center">
                     {team.map((member, index) => (
-                        <Grid item xs={12} sm={6} key={index}>
+                        <Grid item xs={12} sm={8} md={6} key={index}>
                             <Fade in={true} timeout={2300 + index * 200}>
                                 <TeamCard>
                                     <Avatar
